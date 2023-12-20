@@ -29,8 +29,9 @@
 }
 
 .arrow {
-  transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  
 }
 
 /* Show the dropdown content on hover */
@@ -70,6 +71,21 @@
  
   }
 }
+.additional-btns {
+  animation-name: animatebtns;
+  animation-duration: 0.5s;
+  
+}
+
+@keyframes animatebtns {
+  from {
+    right: -300px;
+  }
+  to {
+    right: 0;
+  }
+}
+
   @media screen and (max-width: 640px){
     .cards{
       display: grid;
@@ -144,4 +160,93 @@
     background-repeat: no-repeat;
     height: 30vh; /* Set the height to 100% of the viewport height */
     margin: 0;
+  }
+
+  .flex button.active {
+    border: none;
+    color:#76a9fa;
+    border-bottom: solid 2px #76a9fa;
+    padding-bottom: 12px;
+  }
+  .flex button.active:hover{
+    color: #ffffff;
+  }
+  .filterspans:hover{
+    background-color: #34373d;
+  }
+
+  @media screen and (max-width: 941px){
+    .smallscreen{
+      display: none;
+    }
+    .flexbuttons{
+      display: none;
+    }
+    .tablee{
+     display: grid;
+     width: 90%;
+     margin: auto;
+    }
+    .tableecontent{
+      display: flex;
+      justify-content: space-between;
+    }
+    .buttonsinsearch{
+      display: none;
+    }
+    .nfttable{
+      height: fit-content;
+    }
+    .noslide{
+      display: none;
+    }
+  }
+  @media screen and (min-width: 941px){
+    .largescreen{
+      display: none;
+    }
+    .moreverticon{
+      display: none;
+    }
+    .editprofile{
+      display: none;
+    }
+    .slide{
+      display: none;
+    }
+
+  }
+  @media screen and (max-width: 771px){
+    .details{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .largescreen{
+      transform: translateY(-4%);
+    }
+    .background{
+      transform: translateY(74%);
+      font-size: 6rem !important;
+      margin-left: 5px;
+    }
+    .address{
+      font-size: 18px !important;
+      margin-left: 1%;
+    }
+    
+  }
+  @media screen and (max-width: 635px){
+    .details{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+    }
+    .dafiicons{
+      display: grid;
+      
+    }
+    .address{
+      font-size: 16px !important;
+    }
   }

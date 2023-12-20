@@ -1,6 +1,7 @@
 // IMPORTING NECESSARY FILES
   // IMPORTING MODULES
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
   // IMPORTING COMPONENTS
 import AllCollectionsPageCard from "../components/AllCollectionsPage/AllCollectionsPageCard"
 import FilterBar from "../components/FilterBar"
@@ -29,13 +30,22 @@ export default function AllCollectionsPage(){
   // A FUNCTION TO GENERATE AN ARRAY OF COLLECTION CARDS
   function collectionCardsArrayGenerator(){
     return allCollectionsCardData.map((cardData, index) => (
+      
+ <NavLink
+      key = {index}
+      to={`/singleCollection/?singleCollectionID=${index}`}
+      >
       <AllCollectionsPageCard
-        key = {index}
-        cardImage = {cardData.cardImage}
-        cardTitle = {cardData.cardTitle}
-        volume = {cardData.volume}
-      />
-    ))
+              key = {index}
+              cardImage = {cardData.cardImage}
+              cardTitle = {cardData.cardTitle}
+              volume = {cardData.volume}
+            />
+      </NavLink>
+      ))
+     
+      
+    
   }
 
   return (

@@ -11,9 +11,10 @@ import { NavLink } from "react-router-dom";
 import BrushIcon from '@mui/icons-material/Brush';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+import WalletIcon from '@mui/icons-material/Wallet';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-
-const ConnectWallet = ({ closeModal }) => {
+const ConnectWallet = ({ closeModal,  onSelectWallet  }) => {
 	const { connect, disconnect, connecting } = useWallet()
 	const wallets = useWalletList()
 
@@ -21,6 +22,7 @@ const ConnectWallet = ({ closeModal }) => {
 	const [connectionError, setConnectionError] = useState(null)
 	const [closeContent, setcloseContent] = useState(true)
 	const [isHovered, setIsHovered] = useState(false);
+	const [isHoveredd, setIsHoveredd] = useState(false);
 	const [truncatedAddress, setTruncatedAddress] = useState('');
 
 	const lovelace = useLovelace();
@@ -44,6 +46,7 @@ const ConnectWallet = ({ closeModal }) => {
 			setSelectedWallet(wallet)
 			await connect(wallet.name)
 			setConnectionError(null)
+			onSelectWallet(wallet); 
 		} catch (error) {
 			setConnectionError(error.message)
 			errorRef.current?.openModal()
@@ -75,10 +78,21 @@ const ConnectWallet = ({ closeModal }) => {
 		
 		}
 	}, [connect, address]);
+
+		const handleSwitchWalletHover = () => {
+			setIsHoveredd(true);
+		};
+		
+		const handleSwitchWalletLeave = () => {
+			// Set a timeout to delay hiding the component
+			setTimeout(() => {
+			setIsHoveredd(false);
+			}, 2000); 
+		};
 	
 	return (
     <div className="fixed right-0 -top-0 p-5 items-center  justify-center w-96 z-50  bg-black bg-opacity-100 border rounded-md animateModal1">
-     <span className="close-button  text-3xl absolute top-2 right-4 cursor-pointer" onClick={closeModal}>
+     <span className="close-button  text-3xl absolute top-2 right-4 cursor-pointer text-white" onClick={closeModal}>
             &times;
          </span>
         {closeContent && (
@@ -87,44 +101,24 @@ const ConnectWallet = ({ closeModal }) => {
       <img className='w-12  mt-5' src='../../img/cardano.png' alt='icon'/>
       </div>
              <div className='font-bold py-3  text-xl'>
-       <p> Cardano wallets</p>
+       <p className='text-white'> Cardano wallets</p>
         </div>
 
-      <p className=' text-sm mb-4'>By connecting your wallet, you agree to the <span className='text-[#1864F8]'>Terms & Conditions</span> and <span className='text-[#1864F8]'>Privacy Policy</span></p>
+      <p className=' text-sm mb-4 text-white'>By connecting your wallet, you agree to the <span className='text-[#1864F8]'>Terms & Conditions</span> and <span className='text-[#1864F8]'>Privacy Policy</span></p>
 			</>
 		)}
        
 
 
       
-		<Dropdown
-    
-			title={
-				<Button variant='accent'>
-					{selectedWallet ? (
-						<div className='flex text-[#9CA3AF] text-[16px] border p-3 rounded-md mb-2 '>
-              <img
-								src={selectedWallet.icon}
-								alt={selectedWallet.name}
-								width='30'
-								height='30'
-							/>
-							<span>{selectedWallet.name} connected</span>
-							
-						</div>
-					) : connecting && (
-						'Connecting'
-					)}
-				</Button>
-			}
-		>
+		<Dropdown>
        
 			<div className='connect-wallet'>
 				{!selectedWallet && !connecting && (
 					<ul>
 						{wallets.map((wallet) => (
 							<li
-              className='text-[#9CA3AF] text-[16px] border p-3 rounded-md mb-2 flex'
+              className='text-[#9CA3AF] text-[16px] border px-3 py-1.5 rounded-md mb-2 flex'
 								key={wallet.name}
 								onClick={() => {handleWalletSelection(wallet);
 								setcloseContent(false);
@@ -154,7 +148,7 @@ const ConnectWallet = ({ closeModal }) => {
 						>
 							<NavLink to="/profile" className='flex'>
 							<AccountCircleIcon style={{ fontSize: '2rem' ,color:'#2a2929' }} />
-						<p className='ml-3 text-lg'><b>₳ {Math.round(parseInt(lovelace) / 1000000)}</b></p>
+						<p className='ml-3 text-lg text-white'><b>₳ {Math.round(parseInt(lovelace) / 1000000)}</b></p>
 							</NavLink>
 							
 						{isHovered && (
@@ -162,10 +156,12 @@ const ConnectWallet = ({ closeModal }) => {
                  <span className='flex m-3 border-b   p-2  rounded-md '>
 				<AccountCircleIcon style={{ fontSize: '4rem' ,color:'#2a2929' }} />
 				
+				<img  src={selectedWallet.icon} className='w-8 absolute translate-x-[100%] translate-y-[110%]'/>
+			
 				<div>
-					<p className='w-55 break-all font-bold'><code>{truncatedAddress}</code></p>
+					<p className='w-55 break-all font-bold text-white'><code>{truncatedAddress}</code></p>
 				
-						<p className='ml-1 text-md relative '>₳ {Math.round(parseInt(lovelace) / 1000000)}</p>
+						<p className='ml-1 text-md relative text-white'>₳ {Math.round(parseInt(lovelace) / 1000000)}</p>
 						</div>
 				</span>
                  <NavLink
@@ -173,38 +169,82 @@ const ConnectWallet = ({ closeModal }) => {
                     to="/profile"
                   >
 					<AccountCircleIcon style={{ fontSize: '2rem' ,color:'blue' }} className='mr-2' />
-                    <p>Profile</p>
+                    <p className='text-white'>Profile</p>
                   </NavLink>
                   <NavLink
                     className=" flex py-[12px] px-[16px] hover:bg-[#2a2929] border-none"
                     to="#"
                   >
 					<BrushIcon className='mr-2' style={{ color:'blue' }}/>
-                    <p>Creations</p>
+                    <p className='text-white'>Creations</p>
                   </NavLink>
 				<NavLink
                     className=" flex py-[12px] px-[16px] hover:bg-[#2a2929] border-none"
                     to="#"
                   >
                 <SettingsIcon className='mr-2' style={{ color:'blue' }}/>
-                    <p>Settings</p>
+                    <p className='text-white'>Settings</p>
                   </NavLink>
 				<NavLink
                     className=" flex py-[12px] px-[16px] hover:bg-[#2a2929] border-none"
                     to="#"
                   >
 					<img src='../../img/moonpay.png' className='w-6 mr-2'/>
-                   <p> Buy ADA with moonpay</p>
+                   <p className='text-white'> Buy ADA with moonpay</p>
                   </NavLink>
 				<NavLink
                     className=" flex py-[12px] px-[16px] hover:bg-[#2a2929] border-none"
                     to="#"
                   >
-					<PhoneAndroidIcon className='mr-2' style={{ color:'blue' }}/>
-                    <p>Birble Mobile</p>
+					<PhoneAndroidIcon className='mr-2' style={{ color:'white' }}/>
+                    <p className='text-white'>Birble Mobile</p>
                   </NavLink>
+				<NavLink
+                    className=" flex py-[12px] px-[16px] hover:bg-[#2a2929] border-none"
+                    to="#"
+					onMouseEnter={handleSwitchWalletHover}
+                    onMouseLeave={handleSwitchWalletLeave}
+                  >
+					<WalletIcon className='mr-2' style={{ color:'white' }}/>
+                 <span className='justify-between flex'>
+					<p className='text-white'>Switch wallet</p>
+						<ArrowForwardIosIcon className='p-1.5  absolute right-2'/>
+                  </span>
+                  </NavLink>
+											{isHoveredd && (
+							selectedWallet && !connecting && (
+								<ul className='absolute border bg-slate-950 rounded-md w-full translate-x-[-102%] translate-y-[-50%] '>
+								{wallets.map((wallet) => (
+									<li
+									className='text-[#9CA3AF] text-[16px] px-3 py-1.5 rounded-md mb-2 flex cursor-pointer hover:bg-[#2a2929] '
+									key={wallet.name}
+									onClick={() => {handleWalletSelection(wallet);
+									setcloseContent(false);
+									}}
+									>
+										
+									<img
+										src={wallet.icon}
+										alt={wallet.name}
+										width='30'
+										height='30'
+									/>
+									<span className='dropdown-button__wallet-name'>
+										{wallet.name}
+									
+									</span>
+									{selectedWallet && selectedWallet.name === wallet.name && (
+									<div className="active-banner absolute right-2 px-1.5 text-sm py-0.5 bg-blue-900 text-blue-500 rounded-md">Active</div>
+									)}
+									</li>
+								))}
+								</ul>
+							)
+							)} 
+
                   {/* ... */}
                 </div>
+				
               )}
 						</span>
 						
@@ -215,7 +255,7 @@ const ConnectWallet = ({ closeModal }) => {
 				handleDisconnect();
 				setcloseContent(true);
 			}}  noShadow>
-							Disconnect
+						<p className='text-white'>Disconnect</p>
 						</Button>
 						
 					</div>
